@@ -4,7 +4,7 @@ from .managers import CustomUserManager
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(verbose_name="email address", unique=True)
+    email = models.EmailField(verbose_name="email", unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = "email"
