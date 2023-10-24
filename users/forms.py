@@ -1,11 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import EmailInput, PasswordInput
-from users.models import MyUser
+from users.models import CustomUser
 
 
-class MyUserCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = MyUser
+        model = CustomUser
         fields = ('email',)
         widgets = {
             'email': EmailInput(

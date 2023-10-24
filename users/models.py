@@ -3,9 +3,10 @@ from django.db import models
 from .managers import CustomUserManager
 
 
-class MyUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email', unique=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
 
