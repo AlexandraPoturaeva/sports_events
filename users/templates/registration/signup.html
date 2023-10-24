@@ -1,36 +1,7 @@
-{% extends "base.html" %}
+{% extends "form.html" %}
 
-{% block head %}
-<title>Регистрация</title>
-{% endblock %}
+{% block title %}Регистрация{% endblock title%}
 
-{% block content %}
-<div class="row">
-        <div class="hidden-xs col-sm-1 col-md-3 col-lg-4"></div>
-    <div class="col-xs-12 col-sm-10 col-md-6 col-lg-4 text-center">
-        <div class="p-5"></div>
-        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-    <h2>Регистрация</h2>
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {% for field, error in form.errors.items %}
-        <div class="alert alert-danger" role="alert">
-            {{ error|striptags }}
-        </div>
-        {% endfor %}
-        <div class="mb-3">
-            {{ form.email }}
-        </div>
-        <div class="mb-3">
-            {{ form.password1 }}
-        </div>
-        <div class="mb-3">
-            {{ form.password2 }}
-        </div>
-        <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
-    </form>
-        </div>
-    </div>
-    <div class="hidden-xs col-sm-1 col-md-3 col-lg-4"></div>
-</div>
-{% endblock content %}
+{% block form_title %}Регистрация{% endblock form_title %}
+
+{% block submit_button_text %}Зарегистрироваться{% endblock submit_button_text %}
