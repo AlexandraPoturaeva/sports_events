@@ -2,6 +2,14 @@ from django.contrib.auth.base_user import BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):
+    """
+    This is a customization of django UserManager.
+    Due to the fact that there are no fields 'is_staff' and 'username'
+    in the CustomUser model in this project, these two methods
+    (create_user and create_superuser)
+    should be different from django UserManager,
+    which uses 'is_staff' and 'username'.
+    """
     def create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError('The Email must be set')
