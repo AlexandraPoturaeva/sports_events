@@ -7,5 +7,5 @@ from users.models import MyUser
 class SignUpView(CreateView):
     model = MyUser
     form_class = MyUserCreationForm
-    success_url = reverse_lazy("login")
-    template_name = "registration/signup.html"
+    success_url = reverse_lazy('login')
+    template_name = 'registration/signup.html'
