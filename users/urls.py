@@ -5,6 +5,10 @@ from users.forms import UserLoginForm
 
 urlpatterns = [
     path('sign_up/', SignUpView.as_view()),
-    path('login/', LoginView.as_view(authentication_form=UserLoginForm)),
+    path(
+        'login/',
+        LoginView.as_view(authentication_form=UserLoginForm),
+        name='login',
+    ),
     path('logout/', LogoutView.as_view()),
 ]
