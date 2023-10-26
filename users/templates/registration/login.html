@@ -1,13 +1,13 @@
 {% extends "form.html" %}
 
-{% block social_auth %}
+{% block pre_form %}
 <a
-    href="{% url 'social:begin' 'github' %}?next='/'"
+    href="{% url 'social:begin' 'github' %}?next={{ view.get_success_url }}"
     class="btn btn btn-dark">
     <i class="bi bi-github"></i>
     Войти через GitHub
 </a>
-{% endblock social_auth %}
+{% endblock pre_form %}
 
 {% block title %}Вход{% endblock title%}
 
