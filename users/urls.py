@@ -1,5 +1,5 @@
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import path
+from django.urls import path, include
 from users.views import SignUpView
 from users.forms import UserLoginForm
 
@@ -11,4 +11,5 @@ urlpatterns = [
         name='login',
     ),
     path('logout/', LogoutView.as_view()),
+    path('', include('social_django.urls', namespace='social')),
 ]

@@ -10,13 +10,20 @@
                 {% block form_title %}
                 {% endblock form_title %}
             </h2>
+
+            {% block pre_form %}
+            {% endblock pre_form %}
+
+            <div class="p-2"></div>
             <form method="post" novalidate>
                 {% csrf_token %}
 
-                {% for field, error in form.errors.items %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error|striptags }}
-                </div>
+                {% for field in form %}
+                    {% if field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ field.label }}: {{ field.errors }}
+                    </div>
+                    {% endif %}
                 {% endfor %}
 
                 {% for field in form %}

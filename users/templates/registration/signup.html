@@ -1,5 +1,14 @@
 {% extends "form.html" %}
 
+{% block pre_form %}
+<a
+    href="{% url 'social:begin' 'github' %}?next={{ view.social_auth_redirect_url }}"
+    class="btn btn btn-dark">
+    <i class="bi bi-github"></i>
+    Зарегистрироваться через GitHub
+</a>
+{% endblock pre_form %}
+
 {% block title %}Регистрация{% endblock title%}
 
 {% block form_title %}Регистрация{% endblock form_title %}

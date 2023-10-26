@@ -10,7 +10,7 @@ class CustomUserManager(BaseUserManager):
     should be different from django UserManager,
     which uses 'is_staff' and 'username'.
     """
-    def create_user(self, email, password, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email must be set')
         email = self.normalize_email(email)

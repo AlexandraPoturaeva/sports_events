@@ -1,0 +1,4 @@
+Django==4.2.6
+pre-commit==3.5.0
+python-dotenv==1.0.0
+social-auth-app-django==5.4.0
