@@ -14,7 +14,7 @@ class Event(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET(get_sentinel_user),
     )
-    title = models.CharField(max_length=100, unique_for_date='start_date')
+    title = models.CharField(max_length=100)
     region = models.ForeignKey(
         'core.Region',
         on_delete=models.SET_NULL,
