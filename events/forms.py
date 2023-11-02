@@ -1,6 +1,10 @@
 from django import forms
 from events.models import Event
 from datetime import datetime
+from events.services import \
+    generate_month_choices, \
+    generate_region_choices, \
+    generate_sport_kind_choices
 
 
 class CreateEventForm(forms.Form):
@@ -94,3 +98,15 @@ class CreateEventForm(forms.Form):
             msg = 'Событие с такими названием и датой начала ' \
                   'уже есть в календаре мероприятий'
             self.add_error('title', msg)
+
+
+class FilterEventsForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].initial = 'ALL'
+            self.fields[field].widget.attrs.update({'class': 'form-select'})
+
+    sport_kind = forms.ChoiceField(choices=generate_sport_kind_choices())
+    region = forms.ChoiceField(choices=generate_region_choices())
+    dates = forms.ChoiceField(choices=generate_month_choices())

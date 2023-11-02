@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load core_extras %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col">
+        <form method="get">
+            <div class="row">
+                <div class="p-2"></div>
+                <div class="col-4 mb-3">
+                    {{ form.sport_kind }}
+                </div>
+                <div class="col-3 mb-3">
+                    {{ form.region }}
+                </div>
+                <div class="col-3 mb-3">
+                    {{ form.dates }}
+                </div>
+                <div class="col-2 mb-3 text-end">
+                    <input
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        value="Найти">
+                </div>
+            </div>
+        </form>
+
+        {% if page_obj %}
+            {% for event in page_obj %}
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-1">
+                        <img src="{{event.logo.url}}" class="img-fluid m-4">
+                    </div>
+                    <div class="col-md-11">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.title }}</h5>
+                            <p class="card-text">{{ event.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="p-2"></div>
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a
+                            href="
+                                {% if page_obj.has_previous %}
+                                    ?{% param_replace page=page_obj.previous_page_number %}
+                                {% else %}
+                                    ?{% param_replace page=1 %}
+                                {% endif %}
+                            "
+                            class="page-link bg-primary text-white">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    {% for page_number in page_obj.paginator.page_range %}
+                    <li class="page-item">
+                        <a href="?{% param_replace page=page_number %}" class="page-link bg-primary text-white">
+                            {{page_number}}
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                    <li class="page-item">
+                        <a
+                            href="
+                                {% if page_obj.has_next %}
+                                    ?{% param_replace page=page_obj.next_page_number %}
+                                {% else %}
+                                    ?{% param_replace page=page_obj.paginator.num_pages %}
+                                {% endif %}
+                            "
+                            class="page-link bg-primary text-white">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% else %}
+            <h5>Ничего не найдено</h5>
+        {% endif %}
+    </div>
+    <div class="col-2"></div>
+</div>
+{% endblock content %}
