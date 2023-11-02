@@ -41,7 +41,16 @@
                     </div>
                     <div class="col-md-11">
                         <div class="card-body">
-                            <h5 class="card-title">{{ event.title }}</h5>
+                            <div class="row">
+                                <div class="col-8 text-start">
+                                    <h5 class="card-title">{{ event.title }}</h5>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p class="fs-6 fw-semibold">
+                                        {{ event.date_start|date:"d.m.Y"}}-{{ event.date_end|date:"d.m.Y"}}
+                                    </p>
+                                </div>
+                            </div>
                             <p class="card-text">{{ event.description }}</p>
                         </div>
                     </div>
