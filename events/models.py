@@ -49,8 +49,8 @@ class Event(TimeStampedModel):
             ('TE', 'Командные или эстафетные'),
         ],
     )
-    date_start = models.DateTimeField()
-    date_end = models.DateTimeField()
+    date_start = models.DateField()
+    date_end = models.DateField()
     sport_kind = models.CharField(
         max_length=4,
         choices=[
