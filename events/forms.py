@@ -101,12 +101,12 @@ class CreateEventForm(forms.Form):
 
 
 class FilterEventsForm(forms.Form):
+    sport_kind = forms.ChoiceField(choices=generate_sport_kind_choices())
+    region = forms.ChoiceField(choices=generate_region_choices())
+    dates = forms.ChoiceField(choices=generate_month_choices())
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].initial = 'ALL'
             self.fields[field].widget.attrs.update({'class': 'form-select'})
-
-    sport_kind = forms.ChoiceField(choices=generate_sport_kind_choices())
-    region = forms.ChoiceField(choices=generate_region_choices())
-    dates = forms.ChoiceField(choices=generate_month_choices())
