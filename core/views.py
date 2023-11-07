@@ -9,6 +9,14 @@ class IndexView(FormView):
     template_name = 'index.html'
     form_class = FilterEventsForm
 
+    def get_initial(self):
+        initial = {
+                    'sport_kind': self.request.GET.get('sport_kind'),
+                    'region': self.request.GET.get('region'),
+                    'dates': self.request.GET.get('dates'),
+        }
+        return initial
+
     def get(self, request, *args, **kwargs):
         events = Event.objects.all()
 
@@ -35,16 +43,8 @@ class IndexView(FormView):
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
-        form = self.form_class(
-            initial={
-                'sport_kind': sport_kind,
-                'region': region_id,
-                'dates': dates,
-            },
-        )
-
         return render(
             request,
             'index.html',
-            {"page_obj": page_obj, 'form': form},
+            {"page_obj": page_obj, 'form': self.get_form()},
         )
