@@ -1,6 +1,6 @@
 from django import forms
 from events.models import Event
-from datetime import datetime
+from datetime import date
 from events.services import \
     generate_month_choices, \
     generate_region_choices, \
@@ -50,15 +50,15 @@ class CreateEventForm(forms.Form):
         choices=Event.participation_type.field.choices,
         widget=forms.Select(attrs={'class': 'form-select'}),
     )
-    date_start = forms.DateTimeField(
+    date_start = forms.DateField(
         label='Дата начала',
         widget=forms.SelectDateWidget(attrs={'class': 'form-select'}),
-        initial=datetime.today(),
+        initial=date.today(),
     )
-    date_end = forms.DateTimeField(
+    date_end = forms.DateField(
         label='Дата завершения',
         widget=forms.SelectDateWidget(attrs={'class': 'form-select'}),
-        initial=datetime.today(),
+        initial=date.today(),
     )
     sport_kind = forms.ChoiceField(
         label='Вид спорта',
@@ -85,6 +85,10 @@ class CreateEventForm(forms.Form):
         title = cleaned_data.get('title')
         date_start = cleaned_data.get('date_start')
         date_end = cleaned_data.get('date_end')
+
+        if date_start < date.today():
+            msg = 'Дата начала не может быть раньше сегодня'
+            self.add_error('date_start', msg)
 
         if date_end < date_start:
             msg = 'Дата завершения не может быть раньше даты начала'
