@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 from events.forms import CreateEventForm
 from django.http import HttpResponseRedirect
@@ -5,7 +6,7 @@ from core.models import Region, CityOrDistrict
 from events.models import Event
 
 
-class CreateEventView(FormView):
+class CreateEventView(LoginRequiredMixin, FormView):
     form_class = CreateEventForm
     template_name = 'create_event.html'
     success_url = '/'
