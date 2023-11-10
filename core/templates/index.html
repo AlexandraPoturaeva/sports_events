@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load core_extras %}
-{% load static %}
 
 {% block content %}
 <div class="row">
@@ -36,7 +35,7 @@
             {% for event in page_obj %}
             <div class="card">
                 <div class="row">
-                    <div class="col-md-1">
+                    <div class="col-md-1 my-auto">
                         <img src="{{event.logo.url}}" class="img-fluid m-4">
                     </div>
                     <div class="col-md-11">
@@ -52,6 +51,7 @@
                                 </div>
                             </div>
                             <p class="card-text">{{ event.description }}</p>
+                            <a href="{% url 'apply' event_id=event.pk %}">Подать заявку</a>
                         </div>
                     </div>
                 </div>
