@@ -103,6 +103,7 @@ class Application(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET(get_sentinel_user),
     )
+    event = models.ForeignKey('Event', on_delete=models.CASCADE)
     region = models.ForeignKey(
         'core.Region',
         on_delete=models.SET_NULL,
@@ -126,7 +127,7 @@ class Application(TimeStampedModel):
 
 
 class Participant(TimeStampedModel):
-    application = models.ForeignKey('events.Event', on_delete=models.CASCADE)
+    application = models.ForeignKey('Application', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
     third_name = models.CharField(max_length=25, null=True, blank=True)
