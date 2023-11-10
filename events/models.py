@@ -99,6 +99,10 @@ class Event(TimeStampedModel):
 
 
 class Application(TimeStampedModel):
+    class Meta:
+        get_latest_by = 'created_at'
+        ordering = ['-created_at']
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET(get_sentinel_user),
@@ -127,6 +131,10 @@ class Application(TimeStampedModel):
 
 
 class Participant(TimeStampedModel):
+    class Meta:
+        get_latest_by = 'created_at'
+        ordering = ['last_name']
+
     application = models.ForeignKey('Application', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
@@ -154,3 +162,6 @@ class Participant(TimeStampedModel):
         ],
     )
     birth_date = models.DateField()
+
+    def __str__(self):
+        return f'{self.last_name} {self.first_name} {self.third_name}'
