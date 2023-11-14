@@ -6,34 +6,34 @@ from PIL import Image
 
 
 @pytest.fixture
-def test_password():
+def password():
     return 'test_password'
 
 
 @pytest.fixture
-def create_user(db, django_user_model, test_password):
+def create_user(db, django_user_model, password):
     def create_user_function(test_email='test@example.com'):
         return django_user_model.objects.create_user(
             email=test_email,
-            password=test_password,
+            password=password,
         )
 
     return create_user_function
 
 
 @pytest.fixture
-def auto_login_user(db, client, create_user, test_password):
+def auto_login_user(db, client, create_user, password):
     def auto_login_user_function(user=None):
         if user is None:
             user = create_user()
-        client.login(email=user.email, password=test_password)
+        client.login(email=user.email, password=password)
         return client, user
 
     return auto_login_user_function
 
 
 @pytest.fixture
-def create_image():
+def image():
     f = BytesIO()
     image = Image.new(mode='RGB', size=(100, 100))
     image.save(f, 'JPEG')
@@ -46,7 +46,7 @@ def create_image():
 
 
 @pytest.fixture
-def get_valid_data_for_create_event_form():
+def valid_data_for_create_event_form():
     return {
         'title': 'Название мероприятия',
         'region': 'Название региона',
