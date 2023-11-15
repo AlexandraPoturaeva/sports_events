@@ -1,8 +1,15 @@
 from django.conf import settings
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import \
+    MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from core.models import TimeStampedModel
 from core.services import get_sentinel_user
+
+PHONE_REGEX = RegexValidator(
+    regex=r'^\+?1?\d{9,15}$',
+    message="Номер телефона должен соответствовать формату '+999999999' "
+            "и может содержать до 15 цифр",
+)
 
 
 class Event(TimeStampedModel):
@@ -89,3 +96,72 @@ class Event(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+
+class Application(TimeStampedModel):
+    class Meta:
+        get_latest_by = 'created_at'
+        ordering = ['-created_at']
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET(get_sentinel_user),
+    )
+    event = models.ForeignKey('Event', on_delete=models.CASCADE)
+    region = models.ForeignKey(
+        'core.Region',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    city_or_district = models.ForeignKey(
+        'core.CityOrDistrict',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    is_team = models.BooleanField()
+    team_name = models.CharField(max_length=20, null=True)
+    email = models.EmailField(null=True)
+    phone_number = models.CharField(
+        validators=[PHONE_REGEX],
+        max_length=16,
+        null=True,
+    )
+
+
+class Participant(TimeStampedModel):
+    class Meta:
+        get_latest_by = 'created_at'
+        ordering = ['last_name']
+
+    application = models.ForeignKey('Application', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=30)
+    third_name = models.CharField(max_length=25, null=True, blank=True)
+    qualification = models.CharField(
+        max_length=5,
+        choices=[
+            ('IMS', 'МСМК'),
+            ('MS', 'МС'),
+            ('CMS', 'КМС'),
+            ('I', 'I'),
+            ('II', 'II'),
+            ('III', 'III'),
+            ('I-Y', 'Iю'),
+            ('II-Y', 'IIю'),
+            ('III-Y', 'IIIю'),
+            ('NQ', 'б/р'),
+        ],
+    )
+    gender = models.CharField(
+        max_length=1,
+        choices=[
+            ('M', 'мужской'),
+            ('W', 'женский'),
+        ],
+    )
+    birth_date = models.DateField()
+
+    def __str__(self):
+        return f'{self.last_name} {self.first_name} {self.third_name}'

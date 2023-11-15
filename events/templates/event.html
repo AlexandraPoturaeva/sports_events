@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }}{% endblock title%}
+{% block content %}
+<div class="row">
+    <div class="col text-center">
+        <div class="p-2"></div>
+        <p class="fs-4 fw-bold">{{ event.title }}</p>
+        {% if participants %}
+            <p class="fs-5 fw-semibold">Заявленные участники</p>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-auto text-start">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">Фамилия, имя</th>
+                                <th scope="col">Команда</th>
+                                <th scope="col">Квалификация</th>
+                                <th scope="col">Пол</th>
+                                <th scope="col">Год</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for participant in participants %}
+                            <tr class="participant-info">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ participant.last_name }} {{ participant.first_name }}</td>
+                                <td>
+                                    {% if participant.application.is_team %}
+                                    {{participant.application.team_name}}
+                                    {% else %}
+                                    Лично
+                                    {% endif %}
+                                </td>
+                                <td>{{ participant.get_qualification_display }}</td>
+                                <td>{{ participant.get_gender_display }}</td>
+                                <td>{{ participant.birth_date.year }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col"></div>
+            </div>
+        {% else %}
+            <p class="fs-5 fw-semibold">Пока никто не заявился</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
