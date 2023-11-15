@@ -5,7 +5,7 @@ from django.db import models
 from core.models import TimeStampedModel
 from core.services import get_sentinel_user
 
-phone_regex = RegexValidator(
+PHONE_REGEX = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
     message="Номер телефона должен соответствовать формату '+999999999' "
             "и может содержать до 15 цифр",
@@ -124,7 +124,7 @@ class Application(TimeStampedModel):
     team_name = models.CharField(max_length=20, null=True)
     email = models.EmailField(null=True)
     phone_number = models.CharField(
-        validators=[phone_regex],
+        validators=[PHONE_REGEX],
         max_length=16,
         null=True,
     )
