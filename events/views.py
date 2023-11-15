@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import FormView, TemplateView
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views.generic import FormView, TemplateView, View
 from events.forms import \
     CreateEventForm, \
     SubmitApplicationForm, \
@@ -52,33 +54,48 @@ class SubmitApplicationView(LoginRequiredMixin, TemplateView):
             prefix='add-participant',
         )
 
-        if application_form.is_valid() and participant_formset.is_valid():
-            application_data = application_form.cleaned_data
-
-            region, created = Region.objects.get_or_create(
-                title=application_data.get('region'),
-            )
-            city_or_district, created = CityOrDistrict.objects.get_or_create(
-                title=application_data.get('city_or_district'),
-                region=region,
-            )
-
-            application_data['user'] = self.request.user
-            application_data['event'] = Event.objects.get(pk=event_id)
-            application_data['region'] = region
-            application_data['city_or_district'] = city_or_district
-            application_data['is_team'] = False
-
-            if application_data.pop('application_type') == 'TE':
-                application_data['is_team'] = True
-
-            application_obj = Application.objects.create(**application_data)
-
-            for participant_data in participant_formset.cleaned_data:
-                participant_data['application'] = application_obj
-                Participant.objects.create(**participant_data)
-
-            return HttpResponseRedirect('/')
-
-        else:
+        if not (
+            application_form.is_valid() and
+            participant_formset.is_valid()
+        ):
             return self.render_to_response(self.get_context_data())
+
+        application_data = application_form.cleaned_data
+
+        region, created = Region.objects.get_or_create(
+            title=application_data.get('region'),
+        )
+        city_or_district, created = CityOrDistrict.objects.get_or_create(
+            title=application_data.get('city_or_district'),
+            region=region,
+        )
+
+        application_data['user'] = self.request.user
+        application_data['event'] = Event.objects.get(pk=event_id)
+        application_data['region'] = region
+        application_data['city_or_district'] = city_or_district
+        application_data['is_team'] = False
+
+        if application_data.pop('application_type') == 'TE':
+            application_data['is_team'] = True
+
+        application_obj = Application.objects.create(**application_data)
+
+        for participant_data in participant_formset.cleaned_data:
+            participant_data['application'] = application_obj
+            Participant.objects.create(**participant_data)
+
+        success_url = reverse('event_details', kwargs={'event_id': event_id})
+        return HttpResponseRedirect(success_url)
+
+
+class EventDetailView(View):
+    def get(self, request, event_id):
+        participants = Participant.objects.filter(
+            application__event__pk=event_id,
+        )
+        context = {
+            'event': get_object_or_404(Event, pk=event_id),
+            'participants': participants,
+        }
+        return render(request, 'event.html', context=context)
