@@ -1,6 +1,7 @@
 from events.models import Event
 from core.models import Region
 import time
+import locale
 import calendar
 
 
@@ -17,6 +18,7 @@ def generate_region_choices():
 
 
 def generate_month_choices():
+    locale.setlocale(locale.LC_ALL, 'ru_RU')
     now = time.localtime()
     year_month_raw = [
         time.localtime(
