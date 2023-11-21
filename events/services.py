@@ -18,7 +18,7 @@ def generate_region_choices():
 
 
 def generate_month_choices():
-    locale.setlocale(locale.LC_ALL, 'ru_RU')
+    locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
     now = time.localtime()
     year_month_raw = [
         time.localtime(
