@@ -1,7 +1,9 @@
 add-trailing-comma==3.1.0
+boto3==1.29.6
 dj-database-url==2.1.0
 Django==4.2.6
 django-extensions==3.2.3
+django-storages==1.14.2
 flake8==6.1.0
 gunicorn==21.2.0
 Pillow==10.1.0
