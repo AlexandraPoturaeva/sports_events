@@ -15,6 +15,6 @@ RUN apk add --no-cache --update musl-locales
 
 COPY . /app
 
-ENTRYPOINT ["python"]
+CMD ["python", "manage.py", "collectstatic", "--noinput"]
 
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "sports_events.wsgi:application", "--bind", "0.0.0.0:8000"]
