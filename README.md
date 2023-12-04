@@ -99,7 +99,7 @@ AWS_S3_REGION_NAME=aws-s3-region
 Для сборки образа выполнить в корне проекта:
 
 ```
-docker build --tag cheflist_web .
+docker build --tag sports_events .
 ```
 
 Запустить контейнер:
