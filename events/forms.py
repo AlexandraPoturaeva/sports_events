@@ -107,7 +107,7 @@ class CreateEventForm(forms.Form):
 
 class FilterEventsForm(forms.Form):
     sport_kind = forms.ChoiceField(choices=generate_sport_kind_choices())
-    region = forms.ChoiceField(choices=generate_region_choices())
+    region = forms.ChoiceField(choices=generate_region_choices)
     dates = forms.ChoiceField(choices=generate_month_choices())
 
     def __init__(self, *args, **kwargs):
